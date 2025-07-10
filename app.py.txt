@@ -1,0 +1,33 @@
+import streamlit as st
+from PIL import Image
+from transformers import pipeline
+
+st.set_page_config(page_title="LifeLens AI", layout="centered")
+
+st.title("🧠 LifeLens: Multimodal Emotion Detector")
+
+st.markdown("Detect emotions from voice, text, and face — all in one place!")
+
+# --- TEXT Emotion ---
+st.header("📄 Text Emotion Detection")
+user_text = st.text_area("Enter your text:")
+if st.button("Analyze Text"):
+    with st.spinner("Analyzing..."):
+        classifier = pipeline("text-classification", model="bhadresh-savani/distilbert-base-uncased-emotion")
+        result = classifier(user_text)[0]
+        st.success(f"**Emotion:** {result['label']} ({round(result['score']*100)}%)")
+
+# --- VOICE Emotion ---
+st.header("🎙️ Voice Emotion Detection")
+voice_file = st.file_uploader("Upload a .wav or .mp3 file", type=["wav", "mp3"])
+if voice_file is not None:
+    st.audio(voice_file)
+    st.info("🔈 Voice analysis coming soon in hosted demo!")
+
+# --- IMAGE Emotion ---
+st.header("🖼️ Face Emotion Detection")
+image_file = st.file_uploader("Upload a face image", type=["jpg", "jpeg", "png"])
+if image_file is not None:
+    img = Image.open(image_file)
+    st.image(img, caption="Uploaded Face", use_column_width=True)
+    st.info("📸 Face analysis coming soon in hosted demo!")
