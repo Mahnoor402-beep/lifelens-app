@@ -1,7 +1,8 @@
 streamlit
 transformers
 torch
-whisper
+speechbrain
+torchaudio
 opencv-python
-fer
+torchvision
 Pillow
